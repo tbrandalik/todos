@@ -1,0 +1,25 @@
+version: '3.3'
+services:
+  todos:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: todos
+    image: todos:${VERSION:-0.0.1}
+    ports:
+      - 3000
+    labels:
+      # Explicitly tell Traefik to expose this container
+      - "traefik.enable=true"
+      - "traefik.http.routers.todos.rule=Host(`todos.localhost`)"
+      - "traefik.http.routers.todos.entrypoints=web"
+
+  traefik-proxy:
+    image: traefik
+    container_name: traefik-proxy
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - .config:/etc/traefik
+      - /var/run/docker.sock:/var/run/docker.sock
