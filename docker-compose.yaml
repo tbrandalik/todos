@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: todos
-    image: todos:${VERSION:-0.0.1}
+    image: docker.io/brandalik/todos:${VERSION:-0.0.1}
     ports:
       - 3000
     labels:
