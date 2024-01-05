@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -23,8 +24,9 @@ func getAllTodos(context *gin.Context) {
 
 func main() {
 	router := gin.Default()
-	router.GET("/todos", getAllTodos)
-	err := router.Run("todos:3000")
+	router.Use(static.Serve("/", static.LocalFile("./static", true)))
+	router.GET("/api/todos", getAllTodos)
+	err := router.Run(":3000")
 	if err != nil {
 		return
 	}

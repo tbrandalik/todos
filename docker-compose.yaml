@@ -6,17 +6,21 @@ services:
       dockerfile: Dockerfile
     container_name: todos
     image: docker.io/brandalik/todos:${VERSION:-0.0.1}
+    env_file:
+      - .env
     ports:
       - 3000
     labels:
       # Explicitly tell Traefik to expose this container
-      - "traefik.enable=true"
-      - "traefik.http.routers.todos.rule=Host(`todos.localhost`)"
-      - "traefik.http.routers.todos.entrypoints=web"
+      - traefik.enable=true
+      - traefik.http.routers.todos.rule=Host(`$HOSTNAME`)
+      - traefik.http.routers.todos.entrypoints=web
 
   traefik-proxy:
     image: traefik
     container_name: traefik-proxy
+    env_file:
+      - .env
     ports:
       - "80:80"
       - "8080:8080"
