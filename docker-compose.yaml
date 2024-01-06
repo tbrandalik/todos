@@ -4,16 +4,20 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: todos
     image: docker.io/brandalik/todos:${VERSION:-0.0.1}
     env_file:
       - .env
     ports:
       - 3000
+    deploy:
+      mode: replicated
+      replicas: 2
     labels:
       # Explicitly tell Traefik to expose this container
       - traefik.enable=true
-      - traefik.http.routers.todos.rule=Host(`$HOSTNAME`)
+      - traefik.http.routers.todos.rule=Host(`$HOSTNAME`) || Host(`$HOSTNAME`) && PathPrefix(`/todos/api/v1/`)
+      - traefik.http.middlewares.strip-todos.stripprefix.prefixes=/todos
+      - traefik.http.routers.todos.middlewares=strip-todos@docker
       - traefik.http.routers.todos.entrypoints=web
 
   traefik-proxy:
