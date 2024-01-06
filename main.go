@@ -25,7 +25,7 @@ func getAllTodos(context *gin.Context) {
 func main() {
 	router := gin.Default()
 	router.Use(static.Serve("/", static.LocalFile("./static", true)))
-	router.GET("/api/todos", getAllTodos)
+	router.GET("/api/v1/alltodos", getAllTodos)
 	err := router.Run(":3000")
 	if err != nil {
 		return

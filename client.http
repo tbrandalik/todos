@@ -1,2 +1,2 @@
 ###
-GET http://todos.localhost/api/todos
+GET http://localhost/todos/api/v1/alltodos
