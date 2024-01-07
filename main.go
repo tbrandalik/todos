@@ -19,13 +19,18 @@ var allTodos = []todo{
 }
 
 func getAllTodos(context *gin.Context) {
-	context.IndentedJSON(http.StatusOK, allTodos)
+	context.JSON(http.StatusOK, allTodos)
 }
 
-func main() {
+func setupRouter() *gin.Engine {
 	router := gin.Default()
 	router.Use(static.Serve("/", static.LocalFile("./static", true)))
 	router.GET("/api/v1/alltodos", getAllTodos)
+	return router
+}
+
+func main() {
+	router := setupRouter()
 	err := router.Run(":3000")
 	if err != nil {
 		return
