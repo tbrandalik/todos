@@ -9,6 +9,8 @@ services:
       - .env
     ports:
       - 3000
+    volumes:
+      - ./static:/app/static
     deploy:
       mode: replicated
       replicas: 2
